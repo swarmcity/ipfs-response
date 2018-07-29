@@ -21,10 +21,31 @@ class IpfsResponse extends PolymerElement {
   }
   static get properties() {
     return {
-      prop1: {
+      endPoints: {
+        type: Array,
+        value: ['https://ipfs.io/ipfs/', 'https://ipfs.infura.io'],
+      },
+      timeOut: {
+        type: Number,
+        value: 3000
+      },
+      retryAttempts: {
+        type: Number,
+        value: 10
+      },
+      fileHash: {
         type: String,
-        value: 'ipfs-response',
+        value: 'QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uco/I/m/Alan_Schaaf.jpg'
+      },
+      delayLower: {
+        type: Number,
+        value: 10
+      },
+      delayUpper: {
+        type: Number,
+        value: 1000
       },
     };
   }
+
 } window.customElements.define('ipfs-response', IpfsResponse);
