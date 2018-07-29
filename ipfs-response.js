@@ -80,7 +80,7 @@ class IpfsResponse extends PolymerElement {
         <label for="responseTime">Response Time: </label>
         <input type="text" id="responseTime" value="{{responseTime::input}}" >
 
-        <input type="submit" value="Start" class="button" on-click="_launchTimer">
+        <input type="submit" value="Start" class="button" on-click="_start">
       </template>
       
     `;
@@ -136,18 +136,22 @@ class IpfsResponse extends PolymerElement {
   }
 
 
-  _launchTimer(){
+  _start(){
     if (!this.startTime) this.startTime = performance.now();
     if(this.response === '' && this.retryCount < this.retryAttempts && this.retryCount === 0){
-      this._randomDelay()
-      .then((random) => {
-        setTimeout(() => {
-          this.retryCount++
-          this._callIpfs()
-          this._launchTimer()
-        }, random);
-      })
+      this._callIpfs()
     } 
+  }
+
+  _retry(){
+      // this._randomDelay()
+      // .then((random) => {
+      //   setTimeout(() => {
+      //     this.retryCount++
+          
+      //     this._launchTimer()
+      //   }, random);
+      // })
   }
 
   _randomDelay(){
