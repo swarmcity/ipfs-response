@@ -138,7 +138,7 @@ class IpfsResponse extends PolymerElement {
 
   _launchTimer(){
     if (!this.startTime) this.startTime = performance.now();
-    if(this.response === '' && this.retryCount < this.retryAttempts){
+    if(this.response === '' && this.retryCount < this.retryAttempts && this.retryCount === 0){
       this._randomDelay()
       .then((random) => {
         setTimeout(() => {
@@ -147,7 +147,7 @@ class IpfsResponse extends PolymerElement {
           this._launchTimer()
         }, random);
       })
-    }
+    } 
   }
 
   _randomDelay(){
@@ -161,10 +161,22 @@ class IpfsResponse extends PolymerElement {
     })
   }
 
+
   _callIpfs(){
-    return new Promise((resolve, reject) => {
-      console.log('Calling IPFS')
-    })
+    fetch(this.endPoints[0] + this.fileToFetch)
+    .then(response => response.blob())
+    .then(blob => new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        this.response = reader.result;
+        this.endTime = performance.now();
+        this.responseTime = this.endTime - this.startTime;
+        resolve(reader.result);
+      }
+      reader.onerror = reject
+      reader.readAsDataURL(blob)
+    }))
   }
+
 
 } window.customElements.define('ipfs-response', IpfsResponse);
